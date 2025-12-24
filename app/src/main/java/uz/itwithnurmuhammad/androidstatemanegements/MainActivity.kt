@@ -39,15 +39,17 @@ class MainActivity : ComponentActivity() {
         setContent {
             AndroidStateManegementSTheme {
                 Surface(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
                     CounterNavigation()
                 }
             }
         }
     }
+}
+
+enum class Routes {
+    MviRoute, StateflowRoute, ViewmodelRoute, RememberRoute, Home
 }
 
 @Composable
@@ -73,19 +75,19 @@ fun CounterNavigation() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(space = 8.dp)
             ) {
-                Button(onClick = { navController.navigate(route = "remember_route") }) {
+                Button(onClick = { navController.navigate(route = Routes.RememberRoute.name) }) {
                     Text(text = "Remember")
                 }
                 Spacer(modifier = Modifier.width(width = 8.dp))
-                Button(onClick = { navController.navigate(route = "viewmodel_route") }) {
+                Button(onClick = { navController.navigate(route = Routes.ViewmodelRoute.name) }) {
                     Text(text = "ViewModel")
                 }
                 Spacer(modifier = Modifier.width(width = 8.dp))
-                Button(onClick = { navController.navigate(route = "stateflow_route") }) {
+                Button(onClick = { navController.navigate(route = Routes.StateflowRoute.name) }) {
                     Text(text = "StateFlow")
                 }
                 Spacer(modifier = Modifier.width(width = 8.dp))
-                Button(onClick = { navController.navigate(route = "mvi_route") }) {
+                Button(onClick = { navController.navigate(route = Routes.MviRoute.name) }) {
                     Text(text = "MVI")
                 }
             }
@@ -96,22 +98,30 @@ fun CounterNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = "home",
+        startDestination = Routes.Home.name,
     ) {
-        composable(route = "home") {
+        composable(route = Routes.Home.name) {
             HomeScreen(navController)
         }
-        composable(route = "remember_route") {
-            HomeScreenWithRemember()
+        composable(route = Routes.RememberRoute.name) {
+            HomeScreenWithRemember(onBackClick = {
+                navController.popBackStack()
+            })
         }
-        composable(route = "viewmodel_route") {
-            HomeScreenWithViewModel()
+        composable(route = Routes.ViewmodelRoute.name) {
+            HomeScreenWithViewModel(onBackClick = {
+                navController.popBackStack()
+            })
         }
-        composable(route = "stateflow_route") {
-            HomeScreenWithStateFlow()
+        composable(route = Routes.StateflowRoute.name) {
+            HomeScreenWithStateFlow(onBackClick = {
+                navController.popBackStack()
+            })
         }
-        composable(route = "mvi_route") {
-            HomeScreenWithMVI()
+        composable(route = Routes.MviRoute.name) {
+            HomeScreenWithMVI(onBackClick = {
+                navController.popBackStack()
+            })
         }
     }
 }
